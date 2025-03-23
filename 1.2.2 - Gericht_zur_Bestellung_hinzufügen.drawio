@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="Fu2nkoHtEZ3IX-Ww9v6w" name="Page-1">
-        <mxGraphModel dx="1508" dy="1508" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="2201" dy="1937" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -214,6 +214,9 @@
                 <mxCell id="85" value="OrderItem zu Lieferant senden" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" vertex="1" parent="3">
                     <mxGeometry x="20" y="895" width="140" height="40" as="geometry"/>
                 </mxCell>
+                <mxCell id="95" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=strokeColor;" vertex="1" parent="3">
+                    <mxGeometry x="430" y="935" width="5" height="80" as="geometry"/>
+                </mxCell>
                 <mxCell id="62" style="edgeStyle=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.909;exitY=0.151;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="2" source="59" target="61">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
@@ -230,8 +233,10 @@
                 <mxCell id="4" value="Database" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
                     <mxGeometry x="1050" y="50" width="380" height="1030" as="geometry"/>
                 </mxCell>
-                <mxCell id="92" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="4" source="63" target="91">
-                    <mxGeometry relative="1" as="geometry"/>
+                <mxCell id="92" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="4" source="63">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="250" y="920.0000000000005" as="targetPoint"/>
+                    </mxGeometry>
                 </mxCell>
                 <mxCell id="63" value="OrderItem wird angelegt" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" vertex="1" parent="4">
                     <mxGeometry x="20" y="900" width="140" height="40" as="geometry"/>
@@ -239,7 +244,10 @@
                 <mxCell id="80" value="Neuer Eintrag für Warenkorb" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" vertex="1" parent="4">
                     <mxGeometry x="20" y="570" width="140" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="91" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="4">
+                <mxCell id="97" value="Warenkorb eintrag löschen" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" vertex="1" parent="4">
+                    <mxGeometry x="60" y="730" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="109" value="" style="ellipse;html=1;shape=endState;fillColor=strokeColor;" vertex="1" parent="4">
                     <mxGeometry x="250" y="905" width="30" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="81" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="72" target="80">
@@ -253,8 +261,20 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="93" value="&amp;lt;&amp;lt;precondition&amp;gt;&amp;gt;&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-                    <mxGeometry x="-330" y="-2" width="120" height="30" as="geometry"/>
+                <mxCell id="93" value="&amp;lt;&amp;lt;precondition&amp;gt;&amp;gt; Benutzer ist bereits&amp;nbsp;&lt;span class=&quot;yKMVIe&quot; aria-level=&quot;1&quot; role=&quot;heading&quot;&gt;registriert&lt;/span&gt;&lt;div&gt;&lt;span class=&quot;yKMVIe&quot; aria-level=&quot;1&quot; role=&quot;heading&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;&amp;lt;&amp;lt;precondition&amp;gt;&amp;gt; Gericht existiert&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;yKMVIe&quot; aria-level=&quot;1&quot; role=&quot;heading&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;&amp;lt;&amp;lt;precondition&amp;gt;&amp;gt; Restaurant existiert&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="-410" y="-17" width="280" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="94" value="&amp;lt;&amp;lt;postconditions&amp;gt;&amp;gt; Ein neues OrderItem wurde erstellt&lt;div&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;&amp;lt;&amp;lt;postconditions&amp;gt;&amp;gt; OrderItem ist zum Benutzer zuzuordnen&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="-110" y="-7" width="340" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="96" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="95" target="97">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1100" y="800" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1030" y="990"/>
+                            <mxPoint x="1030" y="800"/>
+                        </Array>
+                    </mxGeometry>
                 </mxCell>
             </root>
         </mxGraphModel>
