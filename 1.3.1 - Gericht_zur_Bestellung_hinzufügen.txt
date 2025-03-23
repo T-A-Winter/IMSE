@@ -1,0 +1,22 @@
+Report zeigt alle Benutzer die aus einem bestimmten Restaurant bestellt haben.
+
+Wir Filter nach einem Restaurant "RESTAURANT EXAMPLE NAME"
+
+Entitäten: Benutzer, OrderItem, Gericht, Restauerant, Warenkorb
+
+SELECT
+  Benutzer.Vorname,
+  Benutzer.Nachname,
+  Gericht.GerichtName,
+  OrderItem.Stückzahl,
+  Gericht.Preis,
+  (Gericht.Preis * OrderItem.Stückzahl) AS Gesamtpreis,
+  Restaurant.Name AS RestaurantName
+FROM
+  Benutzer
+JOIN Warenkorb ON Benutzer.BenutzerID = Warenkorb.BenutzerID
+JOIN OrderItem ON Warenkorb.WarenkorbID = OrderItem.WarenkorbID
+JOIN Gericht ON OrderItem.GerichtID = Gericht.GerichtID
+JOIN Restaurant ON Gericht.RestaurantID = Restaurant.RestaurantID
+WHERE
+  Restaurant.Name = 'RESTAURANT EXAMPLE NAME';

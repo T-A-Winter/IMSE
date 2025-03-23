@@ -1,0 +1,24 @@
+Dieser Report zeigt eine Bestellung von einem Primekunden an.
+Das dient als sanity check um zu prüfen ob der Kunde nach Abschluss 
+des Abonnements nun Mitglied ist und keine Liefergebühren bezahlt werden.
+
+Gefiltert wird nach einem bestimmten User.
+
+Entitäten: Mitglied, Benutzer, OrderItem, Gericht, Warenkorb
+
+SELECT
+  Benutzer.Vorname,
+  Benutzer.Nachname,
+  Mitglied.GratisLieferung,
+  COUNT(OrderItem.OrderItemID) AS AnzahlGerichte,
+  SUM(Gericht.Preis * OrderItem.Stückzahl) AS Gesamtpreis
+FROM
+  Mitglied
+JOIN Benutzer ON PrimeKunde.BenutzerID = Benutzer.BenutzerID
+JOIN Warenkorb ON Benutzer.BenutzerID = Warenkorb.BenutzerID
+JOIN OrderItem ON Warenkorb.WarenkorbID = OrderItem.WarenkorbID
+JOIN Gericht ON OrderItem.GerichtID = Gericht.GerichtID
+WHERE
+  PrimeKunde.GratisLieferung = TRUE
+GROUP BY
+  Benutzer.Vorname, Benutzer.Nachname, PrimeKunde.GratisLieferung;
