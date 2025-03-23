@@ -1,0 +1,29 @@
+Use Case Name:
+
+Gericht zur Bestellung hinzufügen
+
+Trigger:
+
+Ein Benutzer wählt ein Gericht aus und fügt es seinem Warenkorb hinzu.
+
+Preconditions: 
+
+Benutzer ist eingeloggt
+Gericht existiert
+Restaurant existiert
+
+Main Flow:
+
+1)  Benutzer Browst die App nach Restaurants
+2)  Benutzer Browst nach Gerichten im ausgewählten Restaurant
+3)  Benutzer fügt das Gericht zum Warenkorb hinzu 
+4)  Es wird ein OrderItem erstellt
+5)  Benutzer kann stückzahl anpassen
+6)  Benutzer kann neue Gerichte aus dem gleichen Restaurant 
+    auswählen welche zum gleichen OrderItem hinzgefügt werden
+7)  Gesamtpreis (Preis essen + eventuelle Liefergebühren) werden berechnet
+
+Postconditions:
+
+Ein neues OrderItem wurde erstellt
+OderItem ist dem Benutzer zuzuordnen über den Warenkorb

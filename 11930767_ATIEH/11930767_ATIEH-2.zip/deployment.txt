@@ -1,0 +1,21 @@
+Ich habe mich für Stack 1 "Java und PHP" entschieden.
+
+Um die Onlineshop-Database zu deployen, benötigen Sie zuerst eine Anwendung,
+um SQL queries auf einer Datenbank auszuführen. Wenn Sie ein passendes Programm gefunden haben,
+führen Sie bitte die 11930767_ATIEH_create.sql aus, um die Tables, Sequences, Trigger und Relationen zu erstellen.
+
+Sobald die Tables erstellt wurden, können Sie anfangen die Daten in Ihre Datenbank einzutragen,
+um diesen Vorgang zu automatisieren, führen sie die JavaSqlExample.java und JavaSqlExample Class Datei aus.
+
+*Ich führe die Java Daten in meinem Terminal (ssh atiehh00@almighty.cs.univie.ac.at) aus*
+*atiehh00@almighty:~$ javac -classpath ojdbc11.jar:. JavaSqlExample.java*
+*atiehh00@almighty:~$ java -classpath ojdbc11.jar:. JavaSqlExample*
+
+Warten Sie einen kurzen Augenblick und die Datenbank sollte ihre ersten Einträge haben.
+
+Nun können Sie auch das Webinterface der Datenbank verwenden,
+besuchen Sie hierfür die URL „http://wwwlab.cs.univie.ac.at/~atiehh00/HamzaApp/“.
+Auf dieser Website, können Sie neue Einträge erstellen, löschen und teilweise bearbeiten.
+Sie können auch Gericht in Ihrem Warenkorb hinzufügen nachdem Sie sich in der Website mit Ihren Email und ID anmelden.
+
+Für Delete und Update benötigen Sie ein Passwort "dbs23".

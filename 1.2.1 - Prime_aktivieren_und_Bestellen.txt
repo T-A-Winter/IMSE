@@ -1,0 +1,24 @@
+Use Case Name:
+
+Prime aktivieren und Bestellen
+
+Trigger
+
+Ein bereits bestehender Benutzer aktiviert die Prime Mitgliedschaft.
+
+Preconditions:
+
+Benutzer ist eingeloggt
+Benutzer ist kein PrimeKunde
+
+Main Flow:
+
+1)  Benutzer wählt die Prime Option aus
+2)  Benutzer erstellt ein Abonnement 
+3)  Benutzer wird als Mitglied Markiert
+4)  Benutzer folgt UseCase "Gericht zur Bestellung hinzufügen"
+
+Postconditions:
+
+Benutzer ist Prime Mitglied und in Mitglied Table zu finden
+Benutzer hat keine Leifergebühr bezahlt
