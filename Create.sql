@@ -1,31 +1,8 @@
--- Benutzer -- 
-CREATE TABLE Benutzer (
-    BenutzerID INTEGER AUTO_INCREMENT PRIMARY KEY,
-    Vorname VARCHAR(50) NOT NULL,
-    Nachname VARCHAR(50) NOT NULL,
-    Email VARCHAR(100) UNIQUE NOT NULL,
-    Straße VARCHAR(255) NOT NULL,
-    Ort VARCHAR(255) NOT NULL,
-    PLZ INTEGER NOT NULL
-    Passwort VARCHAR(100) NOT NULL,
-    PromoCode VARCHAR(20),
-    GratisLieferung BOOLEAN DEFAULT FALSE,
-    AppID INTEGER,
-    WarenkorbID INTEGER,
-    Benutzer INTEGER,
-    FOREIGN KEY (Benutzer) REFERENCES Benutzer(BenutzerID),
-    FOREIGN KEY (AppID) REFERENCES App(AppID),
-    FOREIGN KEY (WarenkorbID) REFERENCES Warenkorb(WarenkorbID)
-);
-
--- PrimeKunde (IS-A Benutzer) --
-CREATE TABLE PrimeKunde (
-    BenutzerID INTEGER PRIMARY KEY,
-    Gebühr DECIMAL(5,2),
-    GratisLieferung BOOLEAN DEFAULT TRUE,
-    APP INTEGER,
-    FOREIGN KEY (RestaurantID) REFERENCES Restaurant(RestaurantID)
-    FOREIGN KEY (BenutzerID) REFERENCES Benutzer(BenutzerID) ON DELETE CASCADE
+-- App -- 
+CREATE TABLE App (
+    AppID INTEGER AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Version VARCHAR(20) NOT NULL
 );
 
 -- Restaurant --
@@ -39,13 +16,6 @@ CREATE TABLE Restaurant (
     PLZ INTEGER NOT NULL,
     AppID INTEGER,
     FOREIGN KEY (AppID) REFERENCES APP(AppID)
-);
-
--- App -- 
-CREATE TABLE App (
-    AppID INTEGER AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(100) NOT NULL,
-    Version VARCHAR(20) NOT NULL
 );
 
 -- Gericht --
@@ -64,6 +34,36 @@ CREATE TABLE Warenkorb (
     RestaurantID INTEGER,
     Status VARCHAR(20) DEFAULT 'offen', 
     FOREIGN KEY (RestaurantID) REFERENCES Restaurant(RestaurantID)
+);
+
+-- Benutzer -- 
+CREATE TABLE Benutzer (
+    BenutzerID INTEGER AUTO_INCREMENT PRIMARY KEY,
+    Vorname VARCHAR(50) NOT NULL,
+    Nachname VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Straße VARCHAR(255) NOT NULL,
+    Ort VARCHAR(255) NOT NULL,
+    PLZ INTEGER NOT NULL
+    Passwort VARCHAR(100) NOT NULL,
+    PromoCode VARCHAR(20),
+    GratisLieferung BOOLEAN DEFAULT FALSE,
+    AppID INTEGER,
+    WarenkorbID INTEGER,
+    EingeladenVon INTEGER,
+    FOREIGN KEY (EingeladenVon) REFERENCES Benutzer(BenutzerID),
+    FOREIGN KEY (AppID) REFERENCES App(AppID),
+    FOREIGN KEY (WarenkorbID) REFERENCES Warenkorb(WarenkorbID)
+);
+
+-- PrimeKunde (IS-A Benutzer) --
+CREATE TABLE PrimeKunde (
+    BenutzerID INTEGER PRIMARY KEY,
+    Gebühr DECIMAL(5,2),
+    GratisLieferung BOOLEAN DEFAULT TRUE,
+    APP INTEGER,
+    FOREIGN KEY (RestaurantID) REFERENCES Restaurant(RestaurantID)
+    FOREIGN KEY (BenutzerID) REFERENCES Benutzer(BenutzerID) ON DELETE CASCADE
 );
 
 -- OrderItem (schwache Entität) --
