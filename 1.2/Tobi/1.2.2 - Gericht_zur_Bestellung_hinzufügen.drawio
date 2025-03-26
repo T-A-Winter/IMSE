@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="Fu2nkoHtEZ3IX-Ww9v6w" name="Page-1">
-        <mxGraphModel dx="2988" dy="2425" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="2133" dy="1895" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -212,7 +212,7 @@
                     <mxGeometry x="445" y="730" width="110" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="85" value="OrderItem zu Lieferant senden" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" parent="3" vertex="1">
-                    <mxGeometry x="430" y="900" width="140" height="40" as="geometry"/>
+                    <mxGeometry x="430" y="895" width="140" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="62" style="edgeStyle=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.909;exitY=0.151;exitDx=0;exitDy=0;exitPerimeter=0;" parent="2" source="59" target="61" edge="1">
                     <mxGeometry relative="1" as="geometry">
@@ -231,15 +231,15 @@
                 <mxCell id="4" value="Database" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1050" y="50" width="380" height="1070" as="geometry"/>
                 </mxCell>
-                <mxCell id="92" style="edgeStyle=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="4" source="63" edge="1" target="109">
+                <mxCell id="92" style="edgeStyle=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="4" source="63" target="109" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="250" y="920.0000000000005" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="63" value="OrderItem wird angelegt" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" parent="4" vertex="1">
-                    <mxGeometry x="180" y="900" width="140" height="40" as="geometry"/>
+                    <mxGeometry x="180" y="895" width="140" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="118" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="4" source="80" target="117">
+                <mxCell id="118" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="4" source="80" target="117" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="80" value="Neuer Eintrag für Warenkorb" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" parent="4" vertex="1">
@@ -248,7 +248,7 @@
                 <mxCell id="109" value="" style="ellipse;html=1;shape=endState;fillColor=strokeColor;" parent="4" vertex="1">
                     <mxGeometry x="235" y="800" width="30" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="117" value="" style="ellipse;html=1;shape=endState;fillColor=strokeColor;" vertex="1" parent="4">
+                <mxCell id="117" value="" style="ellipse;html=1;shape=endState;fillColor=strokeColor;" parent="4" vertex="1">
                     <mxGeometry x="250" y="395" width="30" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="93" value="&amp;lt;&amp;lt;precondition&amp;gt;&amp;gt; Benutzer ist bereits&amp;nbsp;&lt;span class=&quot;yKMVIe&quot; aria-level=&quot;1&quot; role=&quot;heading&quot;&gt;registriert/eingeloggt&lt;/span&gt;&lt;div&gt;&lt;span class=&quot;yKMVIe&quot; aria-level=&quot;1&quot; role=&quot;heading&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;&amp;lt;&amp;lt;precondition&amp;gt;&amp;gt; Gericht existiert&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;yKMVIe&quot; aria-level=&quot;1&quot; role=&quot;heading&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;&amp;lt;&amp;lt;precondition&amp;gt;&amp;gt; Restaurant existiert&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
@@ -257,7 +257,7 @@
                 <mxCell id="94" value="&amp;lt;&amp;lt;postconditions&amp;gt;&amp;gt; Ein neues OrderItem wurde erstellt&lt;div&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;&amp;lt;&amp;lt;postconditions&amp;gt;&amp;gt; OrderItem ist zum Benutzer zuzuordnen&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
                     <mxGeometry x="-110" y="-7" width="340" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="110" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="67" target="80">
+                <mxCell id="110" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="67" target="80" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="940" y="770" as="sourcePoint"/>
                         <mxPoint x="990" y="720" as="targetPoint"/>
@@ -266,7 +266,7 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="119" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="85" target="63">
+                <mxCell id="119" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="85" target="63" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
             </root>
