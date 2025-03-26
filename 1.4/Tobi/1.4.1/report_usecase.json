@@ -1,0 +1,21 @@
+{
+    "RestaurantID": "<Integer>",
+    "RestaurantName": "<String>",
+    "Bestellt": [
+      {
+        "Benutzer": {
+          "BenutzerID": "<Integer>",
+          "Vorname": "<String>",
+          "Nachname": "<String>"
+        },
+        "Gericht": {
+          "GerichtID": "<Integer>",
+          "GerichtName": "<String>",
+          "Preis": "<Decimal>"
+        },
+        "Stückzahl": "<Integer>",
+        "Gesamtpreis": "<Decimal>"
+      }
+    ]
+  }
+  

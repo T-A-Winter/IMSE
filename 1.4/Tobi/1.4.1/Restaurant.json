@@ -1,0 +1,21 @@
+{
+    "RestaurantID": "<Integer>",
+    "Name": "<String>",
+    "OffenVon": "<Time>",
+    "OffenBis": "<Time>",
+    "Straße": "<String>",
+    "Ort": "<String>",
+    "PLZ": "<Integer>",
+    "App": {
+      "AppID": "<Integer>",
+      "Name": "<String>",
+      "Version": "<String>"
+    },
+    "Gerichte": [
+      {
+        "GerichtID": "<Integer>",
+        "GerichtName": "<String>",
+        "Preis": "<Decimal>"
+      }
+    ]
+  }

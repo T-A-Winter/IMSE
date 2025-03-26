@@ -1,4 +1,5 @@
-Report zeigt alle Benutzer die aus einem bestimmten Restaurant bestellt haben.
+Report zeigt alle Benutzer die aus einem bestimmten Restaurant bestellt haben und
+was bestellt wurde. 
 
 Wir Filter nach einem Restaurant "RESTAURANT EXAMPLE NAME"
 
