@@ -1,15 +1,13 @@
 Meine Annahmen:
 
-Das Dokument für Benutzer mit eingebettetem Prime-Status hilft uns später
-bei der Front- und Backend-Implementierung, da alle wichtigen Informationen
-an einer Stelle sind. Ein normaler Report wäre ineffizient, weil:
+Der "Prime aktivieren und Bestellen" Use Case funktioniert gut mit 
+eingebettetem Prime-Status im Benutzer-Dokument. Das macht Front- und 
+Backend-Entwicklung einfacher, weil man direkt sieht, ob Gratislieferung
+verfügbar ist oder nicht.
 
-Wir müssten über N Benutzer iterieren und im Prime-Status nach
-Gratislieferung filtern. Das hätte viele Vergleichsoperationen.
-
-Deswegen habe ich ein PrimeKundenReport-Dokument erstellt, das bereits
-vorgefiltert ist. Hier muss nur über Benutzer iteriert werden, die
-tatsächlich Prime-Kunden sind.
+Für den Report wäre es ziemlich ineffizient, alle Benutzer zu durchsuchen.
+Deshalb hab ich ein extra PrimeKundenReport-Dokument erstellt - das 
+enthält nur Prime-Mitglieder und spart uns viel Rechenzeit.
 
 Frage:
 
@@ -17,6 +15,11 @@ Analyze how changes in the number of database operations of your USE CASE (e.g.,
 frequent reads or writes) would affect your NoSQL data structure. Would you need to adjust
 document embedding, referencing, or indexing strategies? Explain your reasoning.
 
-Mit dem PrimeKundenReport-Dokument brauche ich keine neuen Strategien.
-Es enthält genau die Informationen, die für den Report benötigt werden,
-und ist bereits optimal für häufige Abfragen strukturiert.
+Ich denke, das Design hält auch mehr Operationen gut aus:
+- Prime-Aktivierungen betreffen immer nur ein Dokument
+- Bei Bestellungen brauchen wir keine komplexen Verknüpfungen
+- Der Report ist schon optimiert durch die Vorfilterung
+
+Eine Anpassung wäre erst nötig, wenn Kunden wirklich viele Bestellungen 
+anhäufen. Dann könnte man ältere Bestellungen auslagern, aber für jetzt
+passt das Design gut.
