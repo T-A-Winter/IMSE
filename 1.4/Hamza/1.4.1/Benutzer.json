@@ -1,0 +1,49 @@
+{
+    "BenutzerID": "<Integer>",
+    "Vorname": "<String>",
+    "Nachname": "<String>",
+    "Email": "<String>",
+    "Straße": "<String>",
+    "Ort": "<String>",
+    "PLZ": "<Integer>",
+    "Passwort": "<String>",
+    "PromoCode": "<String>",
+    "Prime": {
+      "istMitglied": "<Boolean>",
+      "Gebühr": "<Decimal>",
+      "GratisLieferung": "<Boolean>",
+      "Mitglied_seit": "<DateTime>"
+    },
+    "App": {
+      "AppID": "<Integer>",
+      "Name": "<String>",
+      "Version": "<String>"
+    },
+    "Warenkorb": {
+      "WarenkorbID": "<Integer>",
+      "Erstelldatum": "<DateTime>",
+      "Status": "<String>",
+      "Restaurant": {
+        "RestaurantID": "<Integer>",
+        "Name": "<String>",
+        "OffenVon": "<Time>",
+        "OffenBis": "<Time>",
+        "Straße": "<String>",
+        "Ort": "<String>",
+        "PLZ": "<Integer>"
+      },
+      "OrderItems": [
+        {
+          "OrderItemID": "<Integer>",
+          "Gericht": {
+            "GerichtID": "<Integer>",
+            "GerichtName": "<String>",
+            "Preis": "<Decimal>"
+          },
+          "Stückzahl": "<Integer>",
+          "TotalPreis": "<Decimal>",
+          "Liefergebühr": "<Decimal>"
+        }
+      ]
+    }
+  }

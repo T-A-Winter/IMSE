@@ -1,0 +1,21 @@
+{
+    "BenutzerID": "<Integer>",
+    "Vorname": "<String>",
+    "Nachname": "<String>",
+    "Prime": {
+      "istMitglied": "<Boolean>",
+      "GratisLieferung": "<Boolean>"
+    },
+    "Bestellungen": [
+      {
+        "OrderItemID": "<Integer>",
+        "GerichtName": "<String>",
+        "Stückzahl": "<Integer>",
+        "Preis": "<Decimal>",
+        "GesamtPreis": "<Decimal>",
+        "Liefergebühr": "<Decimal>"
+      }
+    ],
+    "AnzahlGerichte": "<Integer>",
+    "GesamtPreis": "<Decimal>"
+  }
