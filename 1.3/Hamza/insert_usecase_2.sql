@@ -1,4 +1,4 @@
--- 1) Benutzer als Prime Kunde markieren
+-- 1) Anna als Prime Kunde markieren
 INSERT INTO PrimeKunde (BenutzerID, Gebühr, GratisLieferung)
 VALUES (1, 9.99, TRUE);
 
