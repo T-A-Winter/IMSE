@@ -56,6 +56,14 @@ CREATE TABLE Benutzer (
     FOREIGN KEY (EingeladenVon) REFERENCES Benutzer(BenutzerID)
 );
 
+-- Gast (IS-A Benutzer)
+CREATE TABLE Gast (
+    BenutzerID INTEGER PRIMARY KEY,
+    SessionID INTEGER AUTO_INCREMENT,
+    Ablaufdatum TIME
+    FOREIGN KEY (BenutzerID) REFERENCES Benutzer(BenutzerID) ON DELETE CASCADE
+);
+
 -- PrimeKunde (IS-A Benutzer)
 CREATE TABLE PrimeKunde (
     BenutzerID INTEGER PRIMARY KEY,

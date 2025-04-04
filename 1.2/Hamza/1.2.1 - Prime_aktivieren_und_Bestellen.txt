@@ -8,7 +8,7 @@ Ein bereits bestehender Benutzer aktiviert die Prime Mitgliedschaft.
 
 Preconditions:
 
-Benutzer ist eingeloggt
+Benutzer ist regristriert
 Benutzer ist kein PrimeKunde
 
 Main Flow:
