@@ -10,9 +10,11 @@ services:
       MARIADB_PASSWORD: ${DB_PASSWORD}
       MARIADB_DATABASE: ${DB_NAME}
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
+    networks:
+      - imse_net
 
   backend:
     build:
@@ -29,17 +31,26 @@ services:
       - "5000:5000"
     volumes:
       - ./SQL_backend:/app
+    networks:
+      - imse_net
+
 
   frontend:
     build:
-      context: ./frontend
+      context: ./Frontend
       dockerfile: Dockerfile
     depends_on:
       - backend
     ports:
       - "8501:8501"
     volumes:
-      - ./frontend:/app
+      - ./Frontend:/app
+    networks:
+      - imse_net
 
 volumes:
   mariadb_data:
+
+networks:
+  imse_net:
+

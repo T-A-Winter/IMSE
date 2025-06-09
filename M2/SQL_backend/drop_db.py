@@ -1,4 +1,4 @@
-from SQL_backend.db import Base, engine
+from db import Base, engine
 
 if __name__ == "__main__":
     print("Dropping all tables...")

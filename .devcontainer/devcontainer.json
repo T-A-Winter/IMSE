@@ -1,0 +1,12 @@
+{
+  "name": "IMSE Dev",
+  "context": "..",
+  "dockerComposeFile": "../M2/docker-compose.yml",
+  "service": "frontend",
+  "workspaceFolder": "/app",
+  "extensions": [
+    "ms-python.python",
+    "ms-azuretools.vscode-docker"
+  ],
+  "remoteUser": "root"
+}
