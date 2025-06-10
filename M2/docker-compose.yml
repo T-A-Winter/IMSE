@@ -34,7 +34,6 @@ services:
     networks:
       - imse_net
 
-
   frontend:
     build:
       context: ./Frontend
@@ -48,8 +47,53 @@ services:
     networks:
       - imse_net
 
+  mongodb:
+    image: mongo:6.0
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-example}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - imse_net
+
+  mongo-express:
+    image: mongo-express:latest
+    restart: always
+    depends_on:
+      - mongodb
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USER:-root}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD:-example}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_ROOT_USER:-root}:${MONGO_ROOT_PASSWORD:-example}@mongodb:27017/
+    networks:
+      - imse_net
+
+  mongo-backend:
+    build:
+      context: ./mongo_backend
+      dockerfile: Dockerfile
+    depends_on:
+      - mongodb
+    environment:
+      MONGO_URI: mongodb://${MONGO_ROOT_USER:-root}:${MONGO_ROOT_PASSWORD:-example}@mongodb:27017/
+      SQL_URI: mysql+pymysql://${DB_USER}:${DB_PASSWORD}@mariadb:3306/${DB_NAME}
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./mongo_backend:/app
+      - ./SQL_backend:/app/SQL_backend
+    networks:
+      - imse_net
+
 volumes:
   mariadb_data:
+  mongodb_data:
 
 networks:
   imse_net:

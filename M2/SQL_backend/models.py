@@ -65,8 +65,11 @@ class User(Base):
     
     def set_password(self, password: str):
         self.password_hash = generate_password_hash(password)
-
     
+    def check_password(self, password: str) -> bool:
+        return check_password_hash(self.password_hash, password)
+
+
 
 class Gast(Base):
     __tablename__ = "gast"
@@ -101,7 +104,7 @@ class Rating(Base):
 class OrderItem(Base):
     __tablename__ = "orderitem"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     warenkorb_id: Mapped[int] = mapped_column(ForeignKey("cart.id", ondelete="CASCADE"), primary_key=True)
     restaurant_address: Mapped[Optional[str]] = mapped_column(String(255))
     total_price: Mapped[Optional[float]] = mapped_column(DECIMAL(8, 2))

@@ -1,9 +1,6 @@
-from typing import Union
-
-from SQL_backend.models import User, Gast
+from typing import Union, Dict, Any
 
 class Session():
-    def __init__(self, user: [Union[User, Gast]]):
-        
-        self.user: [Union[User, Gast]] = user   
+    def __init__(self, user: Dict[str, Any]):
+        self.user = user   
         

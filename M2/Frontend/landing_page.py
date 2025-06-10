@@ -19,3 +19,7 @@ with sign_up:
 # Optionally redirect if already logged in
 if "user" in st.session_state:
     st.success(f"Eingeloggt als {st.session_state.user['first_name']}")
+    
+    # Add admin button for logged-in users
+    if st.button("🔧 Admin Panel"):
+        switch_page("admin")
