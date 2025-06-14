@@ -166,10 +166,106 @@ class Cart(Base):
 class Order(Base):
     __tablename__ = "order"
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"), primary_key=True)
-    restaurant_id: Mapped[int] = mapped_column(ForeignKey("restaurant.id", ondelete="CASCADE"), primary_key=True)
-    cart_id: Mapped[int] = mapped_column(ForeignKey("cart.id", ondelete="CASCADE"), primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    restaurant_id: Mapped[int] = mapped_column(ForeignKey("restaurant.id", ondelete="CASCADE"), nullable=False)
+    cart_id: Mapped[int] = mapped_column(ForeignKey("cart.id", ondelete="CASCADE"), nullable=False)
+    supplier_id: Mapped[Optional[int]] = mapped_column(ForeignKey("supplier.id"))
+    
+    # Order details
+    order_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    delivery_fee: Mapped[float] = mapped_column(DECIMAL(5, 2), default=3.99)  # Historical delivery fees
+    subtotal: Mapped[float] = mapped_column(DECIMAL(8, 2), nullable=False)
+    total: Mapped[float] = mapped_column(DECIMAL(8, 2), nullable=False)
+    
+    # Prime status at time of order (historical record)
+    was_prime_order: Mapped[bool] = mapped_column(Boolean, default=False)
+    
+    # Order status
+    status: Mapped[CartState] = mapped_column(SqlEnum(CartState), default=CartState.IN_PREPARATION)
+    
+    # Delivery tracking
+    estimated_delivery: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    actual_delivery: Mapped[Optional[datetime]] = mapped_column(DateTime)
 
+    # Relationships
     user: Mapped["User"] = relationship(backref="orders")
     restaurant: Mapped["Restaurant"] = relationship(backref="orders")
     cart: Mapped["Cart"] = relationship(backref="order")
+    supplier: Mapped[Optional["Supplier"]] = relationship(backref="deliveries")
+
+
+class PaymentMethod(Enum):
+    CREDIT_CARD = "credit_card"
+    DEBIT_CARD = "debit_card"
+    PAYPAL = "paypal"
+    BANK_TRANSFER = "bank_transfer"
+
+
+class PaymentStatus(Enum):
+    PENDING = "pending"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    REFUNDED = "refunded"
+    CANCELLED = "cancelled"
+
+
+class Payment(Base):
+    __tablename__ = "payment"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    order_id: Mapped[Optional[int]] = mapped_column(ForeignKey("order.id", ondelete="CASCADE"))
+    
+    # Payment details
+    amount: Mapped[float] = mapped_column(DECIMAL(8, 2), nullable=False)
+    payment_method: Mapped[PaymentMethod] = mapped_column(SqlEnum(PaymentMethod), nullable=False)
+    payment_status: Mapped[PaymentStatus] = mapped_column(SqlEnum(PaymentStatus), default=PaymentStatus.PENDING)
+    
+    # Payment metadata
+    payment_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    transaction_id: Mapped[Optional[str]] = mapped_column(String(STRING_LENGTH))
+    payment_description: Mapped[str] = mapped_column(String(STRING_LENGTH), nullable=False)
+    
+    # Relationships
+    user: Mapped["User"] = relationship(backref="payments")
+    order: Mapped[Optional["Order"]] = relationship(backref="payment")
+
+
+class PrimeSubscription(Base):
+    __tablename__ = "prime_subscription"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    
+    # Subscription details
+    start_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    end_date: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    monthly_fee: Mapped[float] = mapped_column(DECIMAL(5, 2), default=9.99)
+    
+    # Subscription status
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    auto_renew: Mapped[bool] = mapped_column(Boolean, default=True)
+    cancelled_date: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    cancellation_reason: Mapped[Optional[str]] = mapped_column(String(STRING_LENGTH))
+    
+    # Relationships
+    user: Mapped["User"] = relationship(backref="prime_subscription")
+
+
+class PrimePayment(Base):
+    __tablename__ = "prime_payment"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    subscription_id: Mapped[int] = mapped_column(ForeignKey("prime_subscription.id", ondelete="CASCADE"), nullable=False)
+    payment_id: Mapped[int] = mapped_column(ForeignKey("payment.id", ondelete="CASCADE"), nullable=False)
+    
+    # Prime payment details
+    billing_period_start: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    billing_period_end: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    due_date: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    paid_date: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    
+    # Relationships
+    subscription: Mapped["PrimeSubscription"] = relationship(backref="payments")
+    payment: Mapped["Payment"] = relationship(backref="prime_payment")

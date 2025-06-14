@@ -1,6 +1,6 @@
 import datetime
 from db import SessionLocal, engine, Base
-from models import App, Restaurant, Dish, User, Address, VehicleType, Supplier, Cart, CartState, OrderItem
+from models import App, Restaurant, Dish, User, Address, VehicleType, Supplier, Cart, CartState, OrderItem, PrimeUser, Member, Order
 from sqlalchemy.exc import IntegrityError
 import random
 
@@ -174,6 +174,19 @@ def seed_db():
         session.add_all(users)
         session.flush()
         
+        # Make second user a Prime member (addressing M1 feedback)
+        prime_user = PrimeUser(
+            user_id=users[1].id,
+            fee=9.99,
+            free_delivery=True
+        )
+        session.add(prime_user)
+        
+        member = Member(user_id=users[1].id)
+        session.add(member)
+        
+        users[1].free_delivery = True
+        
         # Create some carts and order items
         for i in range(3):
             user = users[i]
@@ -207,6 +220,36 @@ def seed_db():
                     restaurant_address=f"{restaurant.street}, {restaurant.city}, {restaurant.zipcode}"
                 )
                 session.add(order_item)
+            
+            # Create Order record for completed carts (addressing M1 feedback)
+            if cart.state == CartState.DELIVERED:
+                # Calculate totals
+                cart_items = session.query(OrderItem).filter_by(warenkorb_id=cart.id).all()
+                subtotal = sum(float(item.total_price) for item in cart_items)
+                
+                # Check if user is Prime for delivery fee
+                is_prime = session.query(PrimeUser).filter_by(user_id=user.id).first() is not None
+                delivery_fee = 0.0 if is_prime else 3.99
+                total = subtotal + delivery_fee
+                
+                # Assign random supplier
+                assigned_supplier = random.choice(suppliers) if suppliers else None
+                
+                order = Order(
+                    user_id=user.id,
+                    restaurant_id=cart.restaurant_id,
+                    cart_id=cart.id,
+                    supplier_id=assigned_supplier.id if assigned_supplier else None,
+                    order_date=datetime.datetime.now() - datetime.timedelta(days=random.randint(1, 7)),
+                    delivery_fee=delivery_fee,
+                    subtotal=subtotal,
+                    total=total,
+                    was_prime_order=is_prime,
+                    status=CartState.DELIVERED,
+                    estimated_delivery=datetime.datetime.now() - datetime.timedelta(days=random.randint(1, 7)) + datetime.timedelta(minutes=30),
+                    actual_delivery=datetime.datetime.now() - datetime.timedelta(days=random.randint(1, 7)) + datetime.timedelta(minutes=random.randint(25, 45))
+                )
+                session.add(order)
         
         session.commit()
         print("Database seeded successfully!")
