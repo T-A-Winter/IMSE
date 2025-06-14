@@ -304,98 +304,127 @@ with tab3:
         - Plus loss of exclusive discounts and cashback rewards
         """)
 
-        # Cancellation form
-        with st.form("cancel_prime_form"):
-            st.markdown("### Cancellation Details")
+        # Cancellation form - Fixed to work around Streamlit form limitation
+        st.markdown("### Cancellation Details")
+        
+        cancellation_reason = st.selectbox(
+            "Why are you cancelling? (Optional)",
+            [
+                "Too expensive",
+                "Don't order frequently enough",
+                "Not satisfied with service",
+                "Found better alternative",
+                "Temporary financial constraints",
+                "Moving to area without coverage",
+                "Other"
+            ],
+            key="cancel_reason_select"
+        )
+        
+        if cancellation_reason == "Other":
+            other_reason = st.text_area("Please specify:", key="cancel_other_reason")
+            final_reason = other_reason if other_reason else "Other"
+        else:
+            final_reason = cancellation_reason
+        
+        # Confirmation checkboxes - Outside form for dynamic updates
+        st.markdown("**Please confirm you understand:**")
+        
+        confirm_loss = st.checkbox(
+            "✅ I understand I will immediately lose all Prime benefits listed above", 
+            key="confirm_loss_checkbox"
+        )
+        confirm_charges = st.checkbox(
+            "✅ I understand delivery fees (€3.99) will be charged on future orders", 
+            key="confirm_charges_checkbox"
+        )
+        confirm_discounts = st.checkbox(
+            "✅ I understand I will lose access to exclusive discounts and deals", 
+            key="confirm_discounts_checkbox"
+        )
+        confirm_final = st.checkbox(
+            "✅ I want to proceed with cancelling my Prime membership", 
+            key="confirm_final_checkbox"
+        )
+        
+        # Check if all confirmations are checked
+        all_confirmed = all([confirm_loss, confirm_charges, confirm_discounts, confirm_final])
+        
+        # Show status of confirmations
+        if not all_confirmed:
+            missing_confirmations = []
+            if not confirm_loss:
+                missing_confirmations.append("Prime benefits loss")
+            if not confirm_charges:
+                missing_confirmations.append("Delivery charges")
+            if not confirm_discounts:
+                missing_confirmations.append("Discount loss")
+            if not confirm_final:
+                missing_confirmations.append("Final confirmation")
             
-            cancellation_reason = st.selectbox(
-                "Why are you cancelling? (Optional)",
-                [
-                    "Too expensive",
-                    "Don't order frequently enough",
-                    "Not satisfied with service",
-                    "Found better alternative",
-                    "Temporary financial constraints",
-                    "Moving to area without coverage",
-                    "Other"
-                ]
-            )
-            
-            if cancellation_reason == "Other":
-                other_reason = st.text_area("Please specify:")
-                final_reason = other_reason if other_reason else "Other"
-            else:
-                final_reason = cancellation_reason
-            
-            # Confirmation checkboxes
-            st.markdown("**Please confirm you understand:**")
-            
-            confirm_loss = st.checkbox("✅ I understand I will immediately lose all Prime benefits listed above")
-            confirm_charges = st.checkbox("✅ I understand delivery fees (€3.99) will be charged on future orders")
-            confirm_discounts = st.checkbox("✅ I understand I will lose access to exclusive discounts and deals")
-            confirm_final = st.checkbox("✅ I want to proceed with cancelling my Prime membership")
-            
-            # Submit button
-            submitted = st.form_submit_button(
-                "🚫 Cancel Prime Membership", 
-                type="secondary",
-                disabled=not all([confirm_loss, confirm_charges, confirm_discounts, confirm_final])
-            )
-            
-            if submitted:
-                if all([confirm_loss, confirm_charges, confirm_discounts, confirm_final]):
-                    try:
+            st.warning(f"⚠️ Please confirm: {', '.join(missing_confirmations)}")
+        else:
+            st.success("✅ All confirmations completed - You can now cancel your membership")
+        
+        # Submit button - Now works dynamically
+        if st.button(
+            "🚫 Cancel Prime Membership", 
+            type="secondary",
+            disabled=not all_confirmed,
+            key="cancel_prime_button"
+        ):
+            if all_confirmed:
+                try:
+                    with st.spinner("Cancelling Prime membership..."):
                         cancel_response = requests.post(
                             f"{BASE_URL}/users/{st.session_state.user['id']}/prime/cancel",
                             json={"reason": final_reason}
                         )
+                    
+                    if cancel_response.status_code == 200:
+                        cancel_data = cancel_response.json()
                         
-                        if cancel_response.status_code == 200:
-                            cancel_data = cancel_response.json()
-                            
-                            st.success("✅ Prime membership cancelled successfully!")
-                            
-                            # Show cancellation details
-                            st.info(f"""
-                            **Cancellation Details:**
-                            - **Cancelled on:** {cancel_data.get('cancellation_date', 'Now')}
-                            - **Grace period ends:** {cancel_data.get('grace_period_end', '30 days from now')}
-                            - **Reason:** {cancel_data.get('reason', final_reason)}
-                            
-                            **What happens now:**
-                            1. 🚫 Prime benefits are **immediately disabled**
-                            2. 💳 No further Prime charges will occur
-                            3. 📅 You have 30 days to reactivate if you change your mind
-                            4. 🔄 After 30 days, you'll need to sign up as a new Prime member
-                            """)
-                            
-                            # Update session state to reflect cancellation
-                            if "prime_status" in st.session_state:
-                                st.session_state.prime_status["free_delivery"] = False
-                            
-                            st.balloons()
-                            
-                            # Offer alternatives
-                            st.markdown("---")
-                            st.subheader("🤔 Changed your mind?")
-                            
-                            alt_col1, alt_col2 = st.columns(2)
-                            
-                            with alt_col1:
-                                if st.button("🔄 Reactivate Prime", type="primary", key="reactivate_prime_after_cancel"):
-                                    switch_page("prime_activation")
-                            
-                            with alt_col2:
-                                if st.button("🏠 Continue Shopping", key="continue_shopping_after_cancel"):
-                                    switch_page("home")
+                        st.warning("⚠️ Prime membership has been cancelled")
                         
-                        else:
-                            st.error(f"Failed to cancel Prime: {cancel_response.text}")
-                            
-                    except Exception as e:
-                        st.error(f"Error cancelling Prime: {e}")
-                else:
-                    st.warning("Please confirm all checkboxes to proceed with cancellation.")
+                        # Show cancellation details
+                        st.info(f"""
+                        **Cancellation Details:**
+                        - **Cancelled on:** {cancel_data.get('cancellation_date', 'Now')}
+                        - **Grace period ends:** {cancel_data.get('grace_period_end', '30 days from now')}
+                        - **Reason:** {cancel_data.get('reason', final_reason)}
+                        
+                        **What happens now:**
+                        1. 🚫 Prime benefits are **immediately disabled**
+                        2. 💳 No further Prime charges will occur
+                        3. 📅 You have 30 days to reactivate if you change your mind
+                        4. 🔄 After 30 days, you'll need to sign up as a new Prime member
+                        """)
+                        
+                        # Update session state to reflect cancellation
+                        if "prime_status" in st.session_state:
+                            st.session_state.prime_status["free_delivery"] = False
+                        
+                        # Offer alternatives
+                        st.markdown("---")
+                        st.subheader("🤔 Changed your mind?")
+                        
+                        alt_col1, alt_col2 = st.columns(2)
+                        
+                        with alt_col1:
+                            if st.button("🔄 Reactivate Prime", type="primary", key="reactivate_prime_after_cancel"):
+                                switch_page("prime_activation")
+                        
+                        with alt_col2:
+                            if st.button("🏠 Continue Shopping", key="continue_shopping_after_cancel"):
+                                switch_page("home")
+                    
+                    else:
+                        st.error(f"Failed to cancel Prime: {cancel_response.text}")
+                        
+                except Exception as e:
+                    st.error(f"Error cancelling Prime: {e}")
+            else:
+                st.warning("Please confirm all checkboxes to proceed with cancellation.")
         
         st.write("---")
         st.subheader("📞 Need Help?")
