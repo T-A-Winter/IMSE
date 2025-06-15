@@ -42,7 +42,7 @@ with col1:
     if sql_healthy:
         st.success("✅ SQL Backend is healthy")
         try:
-            response = requests.get(f"{SQL_BACKEND_URL}/health", timeout=5)
+            response = requests.get(f"{SQL_BACKEND_URL}/health", timeout=5, verify=False)
             health_data = response.json()
             st.json(health_data)
         except Exception as e:
@@ -53,12 +53,12 @@ with col1:
     if st.button("🔄 Test SQL Backend"):
         with st.spinner("Testing SQL backend..."):
             try:
-                response = requests.get(f"{SQL_BACKEND_URL}/health", timeout=10)
+                response = requests.get(f"{SQL_BACKEND_URL}/health", timeout=10, verify=False)
                 st.write(f"Status Code: {response.status_code}")
                 if response.status_code == 200:
                     st.json(response.json())
                 else:
-                    st.error(f"HTTP {response.status_code}: {response.text}")
+                    st.error(f"HTTPS {response.status_code}: {response.text}")
             except Exception as e:
                 st.error(f"Connection failed: {str(e)}")
 
@@ -68,7 +68,7 @@ with col2:
     if mongo_healthy:
         st.success("✅ MongoDB Backend is healthy")
         try:
-            response = requests.get(f"{MONGO_BACKEND_URL}/health", timeout=5)
+            response = requests.get(f"{MONGO_BACKEND_URL}/health", timeout=5, verify=False)
             health_data = response.json()
             st.json(health_data)
         except Exception as e:
@@ -79,12 +79,12 @@ with col2:
     if st.button("🔄 Test MongoDB Backend"):
         with st.spinner("Testing MongoDB backend..."):
             try:
-                response = requests.get(f"{MONGO_BACKEND_URL}/health", timeout=10)
+                response = requests.get(f"{MONGO_BACKEND_URL}/health", timeout=10, verify=False)
                 st.write(f"Status Code: {response.status_code}")
                 if response.status_code == 200:
                     st.json(response.json())
                 else:
-                    st.error(f"HTTP {response.status_code}: {response.text}")
+                    st.error(f"HTTPS {response.status_code}: {response.text}")
             except Exception as e:
                 st.error(f"Connection failed: {str(e)}")
 
@@ -120,7 +120,7 @@ if st.button("🚀 Run Endpoint Tests"):
         with st.expander(f"Testing {endpoint}"):
             try:
                 start_time = time.time()
-                response = requests.get(f"{backend_to_test}{endpoint}", timeout=10)
+                response = requests.get(f"{backend_to_test}{endpoint}", timeout=10, verify=False)
                 end_time = time.time()
                 
                 st.write(f"**Status Code:** {response.status_code}")
@@ -134,7 +134,7 @@ if st.button("🚀 Run Endpoint Tests"):
                     except:
                         st.text(response.text[:500] + "..." if len(response.text) > 500 else response.text)
                 else:
-                    st.error(f"❌ Failed: HTTP {response.status_code}")
+                    st.error(f"❌ Failed: HTTPS {response.status_code}")
                     st.text(response.text)
                     
             except Exception as e:

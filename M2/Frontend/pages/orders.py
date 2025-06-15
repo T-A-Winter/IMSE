@@ -25,7 +25,7 @@ st.sidebar.write(f"Welcome, {st.session_state.user['first_name']} {st.session_st
 
 # Check Prime status and add Prime features
 try:
-    prime_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/prime/status")
+    prime_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/prime/status", verify=False)
     if prime_response.status_code == 200:
         prime_data = prime_response.json()
         if prime_data["is_prime"]:
@@ -179,7 +179,7 @@ with tab1:
     
     # Fetch orders with error handling
     try:
-        response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/orders", timeout=10)
+        response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/orders", timeout=10, verify=False)
         if response.status_code == 200:
             orders = response.json()
             # Ensure all orders have required fields
@@ -275,7 +275,7 @@ with tab2:
     st.write("**All your past orders with detailed delivery information**")
     
     try:
-        response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/orders")
+        response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/orders", verify=False)
         if response.status_code == 200:
             orders = response.json()
             
@@ -380,7 +380,7 @@ with tab3:
     st.write("**System-wide order and delivery management**")
     
     try:
-        response = requests.get(f"{BASE_URL}/orders")
+        response = requests.get(f"{BASE_URL}/orders", verify=False)
         if response.status_code == 200:
             all_orders = response.json()
             
@@ -467,7 +467,7 @@ with tab4:
     st.write("**Comprehensive delivery and performance analytics**")
     
     try:
-        response = requests.get(f"{BASE_URL}/orders")
+        response = requests.get(f"{BASE_URL}/orders", verify=False)
         if response.status_code == 200:
             all_orders = response.json()
             

@@ -44,7 +44,7 @@ display_backend_selector()
 st.sidebar.markdown("---")
 st.sidebar.subheader("🌟 Prime Status")
 try:
-    prime_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/prime/status")
+    prime_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/prime/status", verify=False)
     if prime_response.status_code == 200:
         prime_data = prime_response.json()
         if prime_data["is_prime"]:
@@ -56,7 +56,7 @@ try:
             
             # Show savings
             try:
-                orders_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/orders")
+                orders_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/orders", verify=False)
                 if orders_response.status_code == 200:
                     orders = orders_response.json()
                     prime_orders = [o for o in orders if o.get('was_prime_order')]
@@ -78,7 +78,7 @@ try:
             
             # Calculate potential savings
             try:
-                orders_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/orders")
+                orders_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/orders", verify=False)
                 if orders_response.status_code == 200:
                     orders = orders_response.json()
                     total_orders = len(orders)
@@ -109,7 +109,7 @@ st.sidebar.subheader("🔧 Admin Functions")
 if st.sidebar.button("📊 Import Test Data"):
     with st.spinner("Importing randomized data... This may take a few minutes."):
         try:
-            import_response = requests.post(f"{BASE_URL}/admin/import-data")
+            import_response = requests.post(f"{BASE_URL}/admin/import-data", verify=False)
             if import_response.status_code == 200:
                 st.sidebar.success("✅ Data import completed!")
                 st.sidebar.info("Database has been populated with randomized test data")
@@ -122,7 +122,7 @@ if st.sidebar.button("📊 Import Test Data"):
 if st.sidebar.button("🔄 Migrate to MongoDB"):
     with st.spinner("Migrating data to MongoDB..."):
         try:
-            migrate_response = requests.post(f"{BASE_URL}/admin/migrate")
+            migrate_response = requests.post(f"{BASE_URL}/admin/migrate", verify=False)
             if migrate_response.status_code == 200:
                 st.sidebar.success("✅ Migration completed!")
                 st.sidebar.info("Data has been migrated to MongoDB")
@@ -134,7 +134,7 @@ if st.sidebar.button("🔄 Migrate to MongoDB"):
 if st.sidebar.button("🔄 Migrate from MongoDB"):
     with st.spinner("Migrating data from MongoDB to SQL..."):
         try:
-            migrate_response = requests.post(f"{BASE_URL}/admin/migrate-from-mongo")
+            migrate_response = requests.post(f"{BASE_URL}/admin/migrate-from-mongo", verify=False)
             if migrate_response.status_code == 200:
                 st.sidebar.success("✅ Migration completed!")
                 st.sidebar.info("Data has been migrated from MongoDB to SQL")
@@ -157,7 +157,7 @@ if not check_backend_health():
 
 # Fetch restaurants with error handling
 try:
-    response = requests.get(f"{BASE_URL}/restaurants", timeout=10)
+    response = requests.get(f"{BASE_URL}/restaurants", timeout=10, verify=False)
     if response.status_code == 200:
         restaurants = response.json()
     else:
@@ -200,7 +200,7 @@ else:
 st.subheader("📊 App Statistics")
 
 try:
-    stats_response = requests.get(f"{BASE_URL}/stats")
+    stats_response = requests.get(f"{BASE_URL}/stats", verify=False)
     if stats_response.status_code == 200:
         stats = stats_response.json()
         

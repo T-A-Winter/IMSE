@@ -14,8 +14,8 @@ if "user" in st.session_state:
     # Show user's Prime status
     try:
         import requests
-        backend_url = st.session_state.get("backend_url", "http://backend:5000")
-        prime_response = requests.get(f"{backend_url}/users/{st.session_state.user['id']}/prime/status")
+        backend_url = st.session_state.get("backend_url", "https://backend:5000")
+        prime_response = requests.get(f"{backend_url}/users/{st.session_state.user['id']}/prime/status", verify=False)
         
         if prime_response.status_code == 200:
             prime_data = prime_response.json()

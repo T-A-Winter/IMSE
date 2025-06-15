@@ -8,11 +8,11 @@ st.set_page_config(page_title="Prime Activation", layout="centered")
 # Set default backend URL
 if "active_backend" not in st.session_state:
     st.session_state.active_backend = "SQL"
-    st.session_state.backend_url = "http://backend:5000"
+    st.session_state.backend_url = "https://backend:5000"
 elif st.session_state.active_backend == "SQL":
-    st.session_state.backend_url = "http://backend:5000"
+    st.session_state.backend_url = "https://backend:5000"
 elif st.session_state.active_backend == "MONGO":
-    st.session_state.backend_url = "http://mongo-backend:5001"
+    st.session_state.backend_url = "https://mongo-backend:5001"
 
 BASE_URL = st.session_state.backend_url
 
@@ -34,7 +34,7 @@ try:
             switch_page("sign_in")
         st.stop()
     
-    response = requests.get(f"{BASE_URL}/users/{user_id}/prime/status")
+    response = requests.get(f"{BASE_URL}/users/{user_id}/prime/status", verify=False)
     
     if response.status_code == 200:
         prime_status = response.json()
@@ -232,7 +232,8 @@ if submitted:
         with st.spinner("Activating Prime membership..."):
             response = requests.post(
                 f"{BASE_URL}/users/{user_id}/prime/activate",
-                json={"fee": fee}
+                json={"fee": fee}, 
+                verify=False
             )
         
         if response.status_code == 201:

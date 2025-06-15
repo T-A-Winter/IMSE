@@ -31,6 +31,7 @@ services:
       - "5000:5000"
     volumes:
       - ./SQL_backend:/app
+      - ./certs:/certs:ro
     networks:
       - imse_net
 
@@ -44,6 +45,7 @@ services:
       - "8501:8501"
     volumes:
       - ./Frontend:/app
+      - ./certs:/certs:ro
     networks:
       - imse_net
 
@@ -88,12 +90,15 @@ services:
     volumes:
       - ./mongo_backend:/app
       - ./SQL_backend:/app/SQL_backend
+      - ./certs:/certs:ro
     networks:
       - imse_net
 
 volumes:
   mariadb_data:
   mongodb_data:
+  certs:
+    driver: local
 
 networks:
   imse_net:

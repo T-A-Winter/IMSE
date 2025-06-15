@@ -5,11 +5,11 @@ from streamlit_extras.switch_page_button import switch_page
 # Set default backend URL if not already set
 if "active_backend" not in st.session_state:
     st.session_state.active_backend = "SQL"
-    st.session_state.backend_url = "http://backend:5000"
+    st.session_state.backend_url = "https://backend:5000"
 elif st.session_state.active_backend == "SQL":
-    st.session_state.backend_url = "http://backend:5000"
+    st.session_state.backend_url = "https://backend:5000"
 elif st.session_state.active_backend == "MONGO":
-    st.session_state.backend_url = "http://mongo-backend:5001"
+    st.session_state.backend_url = "https://mongo-backend:5001"
 
 # Use the backend URL from session state
 BASE_URL = st.session_state.backend_url
@@ -68,7 +68,7 @@ if not st.session_state.signup_success:
                 }
 
                 try:
-                    res = requests.post(f"{BASE_URL}/signup", json=user_data)
+                    res = requests.post(f"{BASE_URL}/signup", json=user_data, verify=False)
                     if res.status_code == 201:
                         st.session_state.signup_success = True
                         st.experimental_rerun()

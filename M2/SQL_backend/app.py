@@ -823,7 +823,7 @@ def migrate_to_mongo():
         import requests
         
         session = SessionLocal()
-        mongo_base = "http://mongo-backend:5001"
+        mongo_base = "https://mongo-backend:5001"
         
         try:
             # Migrate restaurants first
@@ -841,7 +841,7 @@ def migrate_to_mongo():
                 
                 # Send to MongoDB
                 try:
-                    requests.post(f"{mongo_base}/admin/sync-restaurant", json=restaurant_data, timeout=10)
+                    requests.post(f"{mongo_base}/admin/sync-restaurant", json=restaurant_data, timeout=10, verify=False)
                 except Exception as e:
                     print(f"Error syncing restaurant {restaurant.id}: {e}")
             
@@ -857,7 +857,7 @@ def migrate_to_mongo():
                 
                 # Send to MongoDB
                 try:
-                    requests.post(f"{mongo_base}/admin/sync-dish", json=dish_data, timeout=10)
+                    requests.post(f"{mongo_base}/admin/sync-dish", json=dish_data, timeout=10, verify=False)
                 except Exception as e:
                     print(f"Error syncing dish {dish.id}: {e}")
             
@@ -881,7 +881,7 @@ def migrate_to_mongo():
                 
                 # Send to MongoDB
                 try:
-                    requests.post(f"{mongo_base}/admin/sync-user", json=user_data, timeout=10)
+                    requests.post(f"{mongo_base}/admin/sync-user", json=user_data, timeout=10, verify=False)
                 except Exception as e:
                     print(f"Error syncing user {user.id}: {e}")
             
@@ -906,7 +906,7 @@ def migrate_to_mongo():
                 
                 # Send to MongoDB
                 try:
-                    requests.post(f"{mongo_base}/admin/sync-order", json=order_data, timeout=10)
+                    requests.post(f"{mongo_base}/admin/sync-order", json=order_data, timeout=10, verify=False)
                 except Exception as e:
                     print(f"Error syncing order {order.id}: {e}")
             
@@ -927,7 +927,7 @@ def migrate_to_mongo():
                 
                 # Send to MongoDB
                 try:
-                    requests.post(f"{mongo_base}/admin/sync-payment", json=payment_data, timeout=10)
+                    requests.post(f"{mongo_base}/admin/sync-payment", json=payment_data, timeout=10, verify=False)
                 except Exception as e:
                     print(f"Error syncing payment {payment.id}: {e}")
             
@@ -943,7 +943,7 @@ def migrate_to_mongo():
                 
                 # Send to MongoDB
                 try:
-                    requests.post(f"{mongo_base}/admin/sync-cart", json=cart_data, timeout=10)
+                    requests.post(f"{mongo_base}/admin/sync-cart", json=cart_data, timeout=10, verify=False)
                 except Exception as e:
                     print(f"Error syncing cart {cart.id}: {e}")
             
@@ -966,12 +966,12 @@ def migrate_from_mongo():
         import requests
         
         # Get data from MongoDB
-        mongo_base = "http://mongo-backend:5001"
+        mongo_base = "https://mongo-backend:5001"
         
         session = SessionLocal()
         try:
             # Migrate users
-            users_response = requests.get(f"{mongo_base}/users")
+            users_response = requests.get(f"{mongo_base}/users", verify=False)
             if users_response.status_code == 200:
                 mongo_users = users_response.json()
                 for user_data in mongo_users:
@@ -992,7 +992,7 @@ def migrate_from_mongo():
                         session.add(user)
             
             # Migrate orders
-            orders_response = requests.get(f"{mongo_base}/orders")
+            orders_response = requests.get(f"{mongo_base}/orders", verify=False)
             if orders_response.status_code == 200:
                 mongo_orders = orders_response.json()
                 for order_data in mongo_orders:
@@ -1016,7 +1016,7 @@ def migrate_from_mongo():
                         session.add(order)
             
             # Migrate payments
-            payments_response = requests.get(f"{mongo_base}/payments")
+            payments_response = requests.get(f"{mongo_base}/payments", verify=False)
             if payments_response.status_code == 200:
                 mongo_payments = payments_response.json()
                 for payment_data in mongo_payments:
@@ -1235,4 +1235,5 @@ def get_all_carts():
         session.close()
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    context = ('/certs/selfsigned.crt', '/certs/selfsigned.key')
+    app.run(debug=True, host="0.0.0.0", ssl_context=context)

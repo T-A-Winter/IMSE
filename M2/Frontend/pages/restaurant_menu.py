@@ -33,7 +33,7 @@ elif "selected_restaurant_id" in st.session_state:
     restaurant_id = st.session_state.selected_restaurant_id
     # Fetch restaurant details
     try:
-        response = requests.get(f"{BASE_URL}/restaurants/{restaurant_id}")
+        response = requests.get(f"{BASE_URL}/restaurants/{restaurant_id}", verify=False)
         if response.status_code == 200:
             restaurant = response.json()
         else:
@@ -80,7 +80,7 @@ if not check_backend_health():
 
 # Fetch menu items with error handling
 try:
-    response = requests.get(f"{BASE_URL}/restaurants/{restaurant_id}/dishes", timeout=10)
+    response = requests.get(f"{BASE_URL}/restaurants/{restaurant_id}/dishes", timeout=10, verify=False)
     if response.status_code == 200:
         dishes = response.json()
     else:
@@ -103,7 +103,8 @@ def create_new_cart(restaurant_id):
         response = requests.post(
             f"{BASE_URL}/carts",
             json={"restaurant_id": int(restaurant_id)},
-            timeout=10
+            timeout=10,
+            verify=False
         )
         
         # Check response
@@ -144,7 +145,8 @@ def migrate_cart_to_current_backend(old_cart):
                 response = requests.post(
                     f"{BASE_URL}/carts/{new_cart['id']}/items",
                     json={"dish_id": int(item["dish_id"]), "quantity": int(item["quantity"])},
-                    timeout=10
+                    timeout=10,
+                    verify=False
                 )
                 
                 if response.status_code == 201:
@@ -176,7 +178,7 @@ def sync_cart_with_backend(cart):
     
     try:
         # Try to get cart from current backend
-        response = requests.get(f"{BASE_URL}/carts/{cart['id']}", timeout=10)
+        response = requests.get(f"{BASE_URL}/carts/{cart['id']}", timeout=10, verify=False)
         
         if response.status_code == 200:
             # Cart exists, sync items
@@ -190,7 +192,7 @@ def sync_cart_with_backend(cart):
             for item in backend_items:
                 # Get dish details for display
                 try:
-                    dish_response = requests.get(f"{BASE_URL}/restaurants/{restaurant_id}/dishes", timeout=5)
+                    dish_response = requests.get(f"{BASE_URL}/restaurants/{restaurant_id}/dishes", timeout=5, verify=False)
                     if dish_response.status_code == 200:
                         dishes = dish_response.json()
                         dish = next((d for d in dishes if d["id"] == item.get("dish_id")), None)
@@ -258,7 +260,8 @@ def add_to_cart(dish_id, dish_name, price, quantity):
     try:
         response = requests.post(
             f"{BASE_URL}/carts/{st.session_state.cart['id']}/items",
-            json={"dish_id": int(dish_id), "quantity": int(quantity)}
+            json={"dish_id": int(dish_id), "quantity": int(quantity)},
+            verify=False
         )
         
         if response.status_code == 201:
@@ -318,7 +321,8 @@ def checkout():
     try:
         response = requests.post(
             f"{BASE_URL}/carts/{st.session_state.cart['id']}/checkout",
-            json={"user_id": st.session_state.user["id"]}
+            json={"user_id": st.session_state.user["id"]},
+            verify=False
         )
         
         if response.status_code == 200:

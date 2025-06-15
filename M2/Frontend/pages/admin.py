@@ -53,7 +53,7 @@ with col1:
     st.write("**SQL → MongoDB**")
     if st.button("Migrate to MongoDB"):
         try:
-            response = requests.post(f"{MONGO_BACKEND_URL}/migrate")
+            response = requests.post(f"{MONGO_BACKEND_URL}/migrate", verify=False)
             if response.status_code == 200:
                 st.success("✅ Migration to MongoDB started!")
                 st.info("Check the MongoDB backend logs for progress.")
@@ -66,7 +66,7 @@ with col2:
     st.write("**MongoDB → SQL**")
     if st.button("Migrate to SQL"):
         try:
-            response = requests.post(f"{SQL_BACKEND_URL}/admin/migrate-from-mongo")
+            response = requests.post(f"{SQL_BACKEND_URL}/admin/migrate-from-mongo", verify=False)
             if response.status_code == 200:
                 st.success("✅ Migration to SQL completed!")
             else:
@@ -79,7 +79,7 @@ st.write("### Database Statistics")
 
 try:
     backend_url = st.session_state.get('backend_url', SQL_BACKEND_URL)
-    response = requests.get(f"{backend_url}/stats")
+    response = requests.get(f"{backend_url}/stats", verify=False)
     
     if response.status_code == 200:
         stats = response.json()

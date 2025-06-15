@@ -45,7 +45,7 @@ def format_datetime(dt_string):
 
 # Check Prime status
 try:
-    response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/prime/status")
+    response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/prime/status", verify=False)
     if response.status_code == 200:
         prime_status = response.json()
     else:
@@ -66,7 +66,7 @@ with tab1:
         
         # Get subscription details
         try:
-            sub_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/prime/subscription")
+            sub_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/prime/subscription", verify=False)
             if sub_response.status_code == 200:
                 subscription = sub_response.json()
                 
@@ -143,7 +143,7 @@ with tab2:
     st.write("**Complete payment history for your account**")
     
     try:
-        payments_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/payments")
+        payments_response = requests.get(f"{BASE_URL}/users/{st.session_state.user['id']}/payments", verify=False)
         if payments_response.status_code == 200:
             payments = payments_response.json()
             
@@ -378,7 +378,8 @@ with tab3:
                     with st.spinner("Cancelling Prime membership..."):
                         cancel_response = requests.post(
                             f"{BASE_URL}/users/{st.session_state.user['id']}/prime/cancel",
-                            json={"reason": final_reason}
+                            json={"reason": final_reason},
+                            verify=False
                         )
                     
                     if cancel_response.status_code == 200:

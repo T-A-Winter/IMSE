@@ -9,8 +9,8 @@ class Session():
         self.user = user   
         
 # Backend URLs
-SQL_BACKEND_URL = "http://backend:5000"
-MONGO_BACKEND_URL = "http://mongo-backend:5001"
+SQL_BACKEND_URL = "https://backend:5000"
+MONGO_BACKEND_URL = "https://mongo-backend:5001"
 
 def check_backend_health(backend_url=None):
     """Check if the specified backend is healthy"""
@@ -18,7 +18,7 @@ def check_backend_health(backend_url=None):
         backend_url = st.session_state.get('backend_url', SQL_BACKEND_URL)
     
     try:
-        response = requests.get(f"{backend_url}/health", timeout=5)
+        response = requests.get(f"{backend_url}/health", timeout=5, verify=False)
         return response.status_code == 200
     except:
         return False
@@ -50,7 +50,7 @@ def switch_backend(new_backend_url):
         # Trigger migration before switching
         if current_backend == SQL_BACKEND_URL and new_backend_url == MONGO_BACKEND_URL:
             # Migrating from SQL to MongoDB
-            migration_response = requests.post(f"{SQL_BACKEND_URL}/admin/migrate", timeout=60)
+            migration_response = requests.post(f"{SQL_BACKEND_URL}/admin/migrate", timeout=60, verify=False)
             if migration_response.status_code != 200:
                 return False, f"Migration to MongoDB failed: {migration_response.text}"
             # Wait a bit for migration to complete
@@ -58,7 +58,7 @@ def switch_backend(new_backend_url):
         
         elif current_backend == MONGO_BACKEND_URL and new_backend_url == SQL_BACKEND_URL:
             # Migrating from MongoDB to SQL
-            migration_response = requests.post(f"{SQL_BACKEND_URL}/admin/migrate-from-mongo", timeout=60)
+            migration_response = requests.post(f"{SQL_BACKEND_URL}/admin/migrate-from-mongo", timeout=60, verify=False)
             if migration_response.status_code != 200:
                 return False, f"Migration to SQL failed: {migration_response.text}"
             # Wait a bit for migration to complete
@@ -157,7 +157,7 @@ def get_or_create_cart(user_id, restaurant_id):
     try:
         # First, try to get existing cart
         if 'cart_id' in st.session_state:
-            cart_response = requests.get(f"{backend_url}/carts/{st.session_state.cart_id}")
+            cart_response = requests.get(f"{backend_url}/carts/{st.session_state.cart_id}", verify=False)
             if cart_response.status_code == 200:
                 cart_data = cart_response.json()
                 # Verify cart belongs to correct restaurant
@@ -170,7 +170,7 @@ def get_or_create_cart(user_id, restaurant_id):
             "restaurant_id": restaurant_id
         }
         
-        response = requests.post(f"{backend_url}/carts", json=cart_data)
+        response = requests.post(f"{backend_url}/carts", json=cart_data, verify=False)
         if response.status_code == 201:
             cart_info = response.json()
             cart_id = cart_info.get('cart_id') or cart_info.get('id')
@@ -187,7 +187,7 @@ def sync_cart_across_backends(cart_id):
     try:
         # Get cart from current backend
         current_backend = st.session_state.backend_url
-        response = requests.get(f"{current_backend}/carts/{cart_id}")
+        response = requests.get(f"{current_backend}/carts/{cart_id}", verify=False)
         
         if response.status_code == 200:
             cart_data = response.json()
@@ -196,7 +196,7 @@ def sync_cart_across_backends(cart_id):
             other_backend = MONGO_BACKEND_URL if current_backend == SQL_BACKEND_URL else SQL_BACKEND_URL
             
             if check_backend_health(other_backend):
-                sync_response = requests.post(f"{other_backend}/admin/sync-cart", json=cart_data)
+                sync_response = requests.post(f"{other_backend}/admin/sync-cart", json=cart_data, verify=False)
                 return sync_response.status_code in [200, 201]
         
         return False
@@ -215,7 +215,7 @@ def validate_user_session():
         backend_url = st.session_state.backend_url
         
         # Try to fetch user from current backend
-        response = requests.get(f"{backend_url}/users/{user_id}")
+        response = requests.get(f"{backend_url}/users/{user_id}", verify=False)
         if response.status_code == 200:
             # Update user data if needed
             user_data = response.json()
@@ -225,7 +225,7 @@ def validate_user_session():
             # User not found in current backend, try to sync
             if 'user' in st.session_state:
                 other_backend = MONGO_BACKEND_URL if backend_url == SQL_BACKEND_URL else SQL_BACKEND_URL
-                sync_response = requests.post(f"{backend_url}/admin/sync-user", json=st.session_state.user)
+                sync_response = requests.post(f"{backend_url}/admin/sync-user", json=st.session_state.user, verify=False)
                 return sync_response.status_code in [200, 201]
             
         return False
@@ -293,9 +293,9 @@ def display_backend_selector():
             try:
                 current_url = st.session_state.backend_url
                 if current_url == SQL_BACKEND_URL:
-                    response = requests.post(f"{SQL_BACKEND_URL}/admin/migrate")
+                    response = requests.post(f"{SQL_BACKEND_URL}/admin/migrate", verify=False)
                 else:
-                    response = requests.post(f"{SQL_BACKEND_URL}/admin/migrate-from-mongo")
+                    response = requests.post(f"{SQL_BACKEND_URL}/admin/migrate-from-mongo", verify=False)
                 
                 if response.status_code == 200:
                     st.success("Data synchronized successfully!")

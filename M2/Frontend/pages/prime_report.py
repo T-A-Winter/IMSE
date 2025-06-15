@@ -5,11 +5,11 @@ from streamlit_extras.switch_page_button import switch_page
 # Backend URL setup
 if "active_backend" not in st.session_state:
     st.session_state.active_backend = "SQL"
-    st.session_state.backend_url = "http://backend:5000"
+    st.session_state.backend_url = "https://backend:5000"
 elif st.session_state.active_backend == "SQL":
-    st.session_state.backend_url = "http://backend:5000"
+    st.session_state.backend_url = "https://backend:5000"
 elif st.session_state.active_backend == "MONGO":
-    st.session_state.backend_url = "http://mongo-backend:5001"
+    st.session_state.backend_url = "https://mongo-backend:5001"
 
 BASE_URL = st.session_state.backend_url
 
@@ -31,7 +31,7 @@ user_id = st.number_input("User ID", min_value=1, value=st.session_state.user["i
 
 if st.button("Generate Enhanced Statistics Report"):
     try:
-        response = requests.get(f"{BASE_URL}/reports/prime-statistics/{user_id}")
+        response = requests.get(f"{BASE_URL}/reports/prime-statistics/{user_id}", verify=False)
         
         if response.status_code == 200:
             report_data = response.json()
@@ -127,7 +127,7 @@ if st.button("Generate Enhanced Statistics Report"):
 st.header("📋 User Order History")
 if st.button("Show Order History"):
     try:
-        response = requests.get(f"{BASE_URL}/users/{user_id}/orders")
+        response = requests.get(f"{BASE_URL}/users/{user_id}/orders", verify=False)
         if response.status_code == 200:
             orders = response.json()
             if orders:

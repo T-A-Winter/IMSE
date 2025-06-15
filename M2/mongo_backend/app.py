@@ -272,11 +272,11 @@ def migrate_data():
         def run_migration():
             try:
                 # Get data from SQL backend
-                sql_base = "http://backend:5000"
+                sql_base = "https://backend:5000"
                 
                 # Migrate restaurants
                 try:
-                    restaurants_response = requests.get(f"{sql_base}/restaurants", timeout=30)
+                    restaurants_response = requests.get(f"{sql_base}/restaurants", timeout=30, verify=False)
                     if restaurants_response.status_code == 200:
                         restaurants = restaurants_response.json()
                         for restaurant in restaurants:
@@ -294,7 +294,7 @@ def migrate_data():
                 
                 # Migrate users
                 try:
-                    users_response = requests.get(f"{sql_base}/users", timeout=30)
+                    users_response = requests.get(f"{sql_base}/users", timeout=30, verify=False)
                     if users_response.status_code == 200:
                         users = users_response.json()
                         for user in users:
@@ -312,7 +312,7 @@ def migrate_data():
                 
                 # Migrate orders
                 try:
-                    orders_response = requests.get(f"{sql_base}/orders", timeout=30)
+                    orders_response = requests.get(f"{sql_base}/orders", timeout=30, verify=False)
                     if orders_response.status_code == 200:
                         orders = orders_response.json()
                         for order in orders:
@@ -350,7 +350,7 @@ def migrate_data():
                     restaurants = list(db.restaurants.find({}, {"id": 1, "_id": 0}))
                     total_dishes = 0
                     for restaurant in restaurants:
-                        dishes_response = requests.get(f"{sql_base}/restaurants/{restaurant['id']}/dishes", timeout=10)
+                        dishes_response = requests.get(f"{sql_base}/restaurants/{restaurant['id']}/dishes", timeout=10, verify=False)
                         if dishes_response.status_code == 200:
                             dishes = dishes_response.json()
                             for dish in dishes:
@@ -1082,4 +1082,5 @@ def sync_dish():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5001) 
+    context = ('/certs/selfsigned.crt', '/certs/selfsigned.key')
+    app.run(debug=True, host="0.0.0.0", port=5001, ssl_context=context) 
